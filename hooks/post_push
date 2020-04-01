@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# This script automatically pushes the create image also to the latest tag
+# Official doc: https://docs.docker.com/docker-hub/builds/advanced/#custom-build-phase-hooks#override-build-test-or-push-commands
+
+set -e
+
+# Tag and push image
+docker tag $IMAGE_NAME $DOCKER_REPO:latest
+docker push $DOCKER_REPO:latest
