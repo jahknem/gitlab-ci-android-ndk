@@ -1,22 +1,31 @@
 # gitlab-ci-android-ndk
-This Docker image contains the Android SDK, NDK and most common packages necessary for building Android apps in a CI tool like GitLab CI. Make sure your CI environment's caching works as expected, this greatly improves the build time, especially if you use multiple build jobs.
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/mmr42/gitlab-ci-android-ndk)](https://hub.docker.com/r/mmr42/gitlab-ci-android-ndk/builds)
 
+## About
+This Docker image contains the Android SDK, NDK and most common packages necessary for building Android apps in a CI tool like GitLab CI. Make sure your CI environment's caching works as expected, this greatly improves the build time, especially if you use multiple build jobs. It is based on [jangrewe/gitlab-ci-android](https://github.com/jangrewe/gitlab-ci-android) with the NDK and CMake added as additional packages.
+
+Obligatory [Docker Hub](https://hub.docker.com/r/mmr42/gitlab-ci-android-ndk) link.
+
+## Usage
 A `.gitlab-ci.yml` with caching of your project's dependencies would look like this:
 
 ```
-image: mmr42/gitlab-ci-android-ndk
+image: mmr42/gitlab-ci-android-ndk:latest
 
-stages:
-- build
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 before_script:
 - export GRADLE_USER_HOME=$(pwd)/.gradle
 - chmod +x ./gradlew
 
 cache:
-  key: ${CI_PROJECT_ID}
+  key: ${CI_COMMIT_REF_NAME}
   paths:
   - .gradle/
+
+stages:
+  - build
 
 build:
   stage: build
@@ -24,5 +33,5 @@ build:
   - ./gradlew assembleDebug
   artifacts:
     paths:
-    - app/build/outputs/apk/app-debug.apk
+    - app/build/outputs/apk/*.apk
 ```
