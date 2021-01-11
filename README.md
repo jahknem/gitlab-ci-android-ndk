@@ -9,7 +9,7 @@ Obligatory [Docker Hub] (https://hub.docker.com/r/jahknem/gitlab-ci-android-ndk)
 A `.gitlab-ci.yml` with caching of your project's dependencies would look like this:
 
 ```
-image: mmr42/gitlab-ci-android-ndk:latest
+image: jahknem/gitlab-ci-android-ndk:latest
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
